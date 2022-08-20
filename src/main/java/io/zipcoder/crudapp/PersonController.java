@@ -1,5 +1,8 @@
 package io.zipcoder.crudapp;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,27 +11,30 @@ import java.util.List;
 @RequestMapping ("/people")
 public class PersonController {
 
+    @Autowired
+    PersonService personService;
+
     @PostMapping
-    Person createPerson(@RequestBody Person p) {
-        return null;
+    public ResponseEntity<Person> createPerson(@RequestBody Person p) {
+        return new ResponseEntity<>(personService.createPerson(p), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
-    Person getPerson(@PathVariable int id) {
-        return null;
+    private ResponseEntity<Person> getPerson(@PathVariable int id) {
+        return new ResponseEntity<>(personService.getPerson(id), HttpStatus.OK);
     }
 
     @GetMapping
-    List<Person> getPersonList() {
-        return null;
+    private ResponseEntity<List<Person>> getPersonList() {
+        return new ResponseEntity<>(personService.getPersonList(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    Person updatePerson(@RequestBody Person p, @PathVariable int id) {
-        return null;
+    private ResponseEntity<Person> updatePerson(@RequestBody Person p, @PathVariable int id) {
+        return new ResponseEntity<>(personService.updatePerson(p, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    void DeletePerson(int id) {
-
+    private void DeletePerson(@PathVariable int id) {
+        personService.DeletePerson(id);
     }
 }
