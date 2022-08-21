@@ -1,4 +1,4 @@
-package io.zipcoder.crudapp;
+package io.zipcoder.crudapp.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

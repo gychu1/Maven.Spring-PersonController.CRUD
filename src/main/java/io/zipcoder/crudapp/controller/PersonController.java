@@ -1,11 +1,14 @@
-package io.zipcoder.crudapp;
+package io.zipcoder.crudapp.controller;
 
+import io.zipcoder.crudapp.entity.Person;
+import io.zipcoder.crudapp.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping ("/people")
@@ -20,7 +23,12 @@ public class PersonController {
     }
     @GetMapping("/{id}")
     private ResponseEntity<Person> getPerson(@PathVariable int id) {
-        return new ResponseEntity<>(personService.getPerson(id), HttpStatus.OK);
+        Optional<Person> person = personService.getPerson(id);
+        if (person.isPresent()) {
+            return new ResponseEntity<>(person.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
@@ -34,7 +42,8 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    private void DeletePerson(@PathVariable int id) {
+    private ResponseEntity<Void> DeletePerson(@PathVariable int id) {
         personService.DeletePerson(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
